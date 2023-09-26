@@ -3,7 +3,7 @@ import tiktoken
 import numpy as np
 import pandas as pd
 
-df = pd.read_csv('data/shakespeare/grimms_fairytales.csv')
+df = pd.read_csv('data/fairytales/grimms_fairytales.csv')
 print(df.columns)
 print(df.head())
 data = df['Text'].str.cat(sep='\n')
@@ -13,6 +13,7 @@ train_data = data[:int(n*0.9)]
 val_data = data[int(n*0.9):]
 
 # encode with tiktoken gpt2 bpe
+
 enc = tiktoken.get_encoding("gpt2")
 train_ids = enc.encode_ordinary(train_data)
 val_ids = enc.encode_ordinary(val_data)
@@ -25,5 +26,3 @@ val_ids = np.array(val_ids, dtype=np.uint16)
 train_ids.tofile(os.path.join(os.path.dirname(__file__), 'train.bin'))
 val_ids.tofile(os.path.join(os.path.dirname(__file__), 'val.bin'))
 
-# train.bin has 301,966 tokens
-# val.bin has 36,059 tokens
