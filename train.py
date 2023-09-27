@@ -336,4 +336,3 @@ print('Cached:   ', round(torch.cuda.memory_cached(0)/1024**3,1), 'GB')
 
 if ddp:
     destroy_process_group()
-
