@@ -31,11 +31,6 @@ device_type = 'cuda' if 'cuda' in device else 'cpu' # for later use in torch.aut
 ptdtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16, 'float16': torch.float16}[dtype]
 ctx = nullcontext() if device_type == 'cpu' else torch.amp.autocast(device_type=device_type, dtype=ptdtype)
 
-# BEFORE!!!!!
-print(torch.cuda.get_device_name(0))
-print('Memory Usage:')
-print('Allocated:', round(torch.cuda.memory_allocated(0)/1024**3,1), 'GB')
-print('Cached:   ', round(torch.cuda.memory_cached(0)/1024**3,1), 'GB')
 
 # model
 if init_from == 'resume':
@@ -93,8 +88,8 @@ with torch.no_grad():
             y = model.generate(x, max_new_tokens, temperature=temperature, top_k=top_k)
             print(decode(y[0].tolist()))
             print('---------------')
-# AFTER!!!!!
-print(torch.cuda.get_device_name(0))
-print('Memory Usage:')
-print('Allocated:', round(torch.cuda.memory_allocated(0)/1024**3,1), 'GB')
-print('Cached:   ', round(torch.cuda.memory_cached(0)/1024**3,1), 'GB')
+
+
+
+memory_stats = torch.cuda.memory_stats()
+print(memory_stats["allocated_bytes.all.current"])

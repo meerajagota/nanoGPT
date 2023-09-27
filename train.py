@@ -128,11 +128,9 @@ def get_batch(split):
     return x, y
 
 
-# BEFORE!!!!
-print(torch.cuda.get_device_name(0))
-print('Memory Usage:')
-print('Allocated:', round(torch.cuda.memory_allocated(0)/1024**3,1), 'GB')
-print('Cached:   ', round(torch.cuda.memory_cached(0)/1024**3,1), 'GB')
+# BEFORE!!!!!
+memory_stats = torch.cuda.memory_stats()
+print(memory_stats["allocated_bytes.all.current"])
 
 # init these up here, can override if init_from='resume' (i.e. from a checkpoint)
 iter_num = 0
@@ -336,11 +334,9 @@ while True:
     if iter_num > max_iters:
         break
 
-# AFTER!!!!!
-print(torch.cuda.get_device_name(0))
-print('Memory Usage:')
-print('Allocated:', round(torch.cuda.memory_allocated(0)/1024**3,1), 'GB')
-print('Cached:   ', round(torch.cuda.memory_cached(0)/1024**3,1), 'GB')
+memory_stats = torch.cuda.memory_stats()
+print(memory_stats["allocated_bytes.all.current"])
+
 
 if ddp:
     destroy_process_group()
